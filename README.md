@@ -1,2 +1,3 @@
-# ansible-collection-adamhgriffith_uofu
-Ansible Collections in the adamhgriffith_uofu namespace.
+# Ansible Collection - adamhgriffith_uofu.desktop
+
+Documentation for the collection.

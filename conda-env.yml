@@ -1,0 +1,11 @@
+# conda env create -f conda-env.yml
+name: desktop-ansible
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - pip
+  - python=3.10
+  - pip:
+      - ansible-core
+      - ansible-lint
