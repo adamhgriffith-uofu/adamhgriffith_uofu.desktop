@@ -1,0 +1,66 @@
+---
+
+- name: Install/update firewall-related packages
+  dnf:
+    name:
+      - firewalld
+      - python3-dbus
+      - python3-firewall
+    state: latest
+
+- name: Set permanent configuration facts
+  ansible.builtin.set_fact:
+    firewalld_backup_path: "/tmp/{{ '%Y%m%d_%H%M%S' | strftime(ansible_date_time.epoch) }}_firewalld_config_perm.tar.gz"
+
+- name: "Create a backup of /etc/firewalld at: {{ firewalld_backup_path }}"
+  community.general.archive:
+    path: /etc/firewalld
+    dest: "{{ firewalld_backup_path }}"
+    format: gz
+    owner: root
+    group: root
+    mode: 0600
+
+- name: Ensure zone drifting is disabled
+  community.general.ini_file:
+    path: /etc/firewalld/firewalld.conf
+    option: 'AllowZoneDrifting'
+    value: 'no'
+    mode: 0644
+    backup: true
+
+- name: Stop, disable and mask nftables
+  ansible.builtin.service:
+    name: nftables
+    state: stopped
+    enabled: no
+    masked: yes
+
+- name: Start and enable firewalld.service
+  ansible.builtin.service:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Get current default zone
+  ansible.builtin.command: >-
+    /usr/bin/firewall-cmd --get-default-zone
+  failed_when: no
+  changed_when: no
+  register: firewalld_current_default_zone
+
+- name: "Enforce default zone: {{ firewall_ge_default_zone }}"
+  when: firewall_ge_default_zone not in firewalld_current_default_zone.stdout
+  ansible.builtin.command: >-
+    /usr/bin/firewall-cmd --set-default-zone {{ firewall_ge_default_zone }}
+
+- name: Gather firewalld.service information
+  ansible.builtin.systemd:
+    name: firewalld
+  register: firewalld_service
+
+- name: Final firewalld.service checks
+  ansible.builtin.assert:
+    that: firewalld_service.status.ActiveState == 'active'
+    fail_msg: "FAILED: firewalld.service is not running! {{ firewalld_service.status }}!"
+    success_msg: "SUCCESS: firewalld.service is running."

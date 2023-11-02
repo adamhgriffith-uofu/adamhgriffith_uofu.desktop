@@ -1,0 +1,95 @@
+---
+# defaults file for common
+
+firewall_default_zone: public
+
+virtualbox_version: 7.0
+
+yum_repos:
+  - name: 1password
+    description: 1Password Stable Channel- $basearch
+    file: 1password
+    baseurl: https://downloads.1password.com/linux/rpm/stable/$basearch
+    gpgcheck: true
+    repo_gpgcheck: true
+    gpgkey: https://downloads.1password.com/linux/keys/1password.asc
+    sslverify: true
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    enabled: true
+
+  - name: conda
+    description: Conda Stable Channel - $basearch
+    file: conda
+    baseurl: https://repo.anaconda.com/pkgs/misc/rpmrepo/conda
+    gpgcheck: true
+    repo_gpgcheck: false
+    gpgkey: https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc
+    sslverify: true
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    enabled: true
+
+  - name: google-chrome
+    description: Google Chrome Stable Channel - $basearch
+    file: google-chrome
+    baseurl: http://dl.google.com/linux/chrome/rpm/stable/$basearch
+    gpgcheck: true
+    repo_gpgcheck: false
+    gpgkey: https://dl-ssl.google.com/linux/linux_signing_key.pub
+    sslverify: true
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    enabled: true
+
+  - name: hashicorp
+    description: Hashicorp Stable Channel - $basearch
+    file: hashicorp
+    baseurl: https://rpm.releases.hashicorp.com/RHEL/$releasever/$basearch/stable
+    gpgcheck: true
+    repo_gpgcheck: false
+    gpgkey: https://rpm.releases.hashicorp.com/gpg
+    sslverify: true
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    enabled: true
+
+  - name: nvidia-cuda
+    description: Nvidia CUDA Stable Channel - $basearch
+    file: nvidia-cuda
+    baseurl: https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64
+    gpgcheck: true
+    repo_gpgcheck: false
+    gpgkey: https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/D42D0685.pub
+    sslverify: true
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    enabled: true
+
+  - name: slack
+    description: Slack Stable Channel - $basearch
+    file: slack
+    baseurl: https://packagecloud.io/slacktechnologies/slack/fedora/21/$basearch
+    gpgcheck: true
+    repo_gpgcheck: false
+    gpgkey: https://slack.com/gpg/slack_pubkey_20210901.gpg
+    sslverify: true
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    enabled: true
+
+  - name: virtualbox
+    description: Oracle VirtualBox Stable Channel - $basearch
+    file: virtualbox
+    baseurl: http://download.virtualbox.org/virtualbox/rpm/el/$releasever/$basearch
+    gpgcheck: true
+    repo_gpgcheck: true
+    gpgkey: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+    sslverify: true
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    enabled: true
+
+  - name: vscode
+    description: Microsoft VSCode Stable Channel - $basearch
+    file: vscode
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    gpgcheck: true
+    repo_gpgcheck: false
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+    sslverify: true
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    enabled: true

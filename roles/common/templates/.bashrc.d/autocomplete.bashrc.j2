@@ -1,0 +1,8 @@
+
+{{ ansible_managed | comment }}
+
+# Kubectl bash completion
+source <(kubectl completion bash)
+
+# Terraform bash completion
+complete -C /usr/bin/terraform terraform

@@ -1,0 +1,7 @@
+---
+
+- name: Firewall tasks
+  include_tasks: "firewall.yml"
+
+- name: Bashrc tasks
+  include_tasks: "bashrc.yml"

@@ -1,0 +1,29 @@
+---
+
+- name: Ensure the ~/.bashrc.d directory exists
+  file:
+    path: "~/.bashrc.d"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0755
+  become_user: "{{ ansible_user }}"
+
+- name: "Ensure the file exists: {{ item }}"
+  template:
+    src: ".bashrc.d/{{ item }}.bashrc.j2"
+    dest: "~/.bashrc.d/{{ item }}.bashrc"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0644'
+  validate: 'bash -n %s'
+  become_user: "{{ ansible_user }}"
+  loop:
+    - autocomplete
+    - git-prompt
+    - variables
+
+- name: Install Vagrant Bash autocomplete
+  shell: >-
+    vagrant autocomplete install --bash
+  become_user: "{{ ansible_user }}"

@@ -1,0 +1,31 @@
+---
+
+- name: Print OS and distro Ansible variables collected by setup
+  ansible.builtin.debug:
+    msg:
+      - "ansible_os_family: {{ ansible_os_family }}"
+      - "ansible_distribution: {{ ansible_distribution }}"
+      - "ansible_distribution_major_version: {{ ansible_distribution_major_version }}"
+      - "ansible_distribution_version: {{ ansible_distribution_version }}"
+      - "ansible_distribution_release: {{ ansible_distribution_release }}"
+
+- name: Include roles' meta data
+  ansible.builtin.include_vars:
+    file: "{{ role_path }}/meta/main.yml"
+
+- name: Set facts
+  ansible.builtin.set_fact:
+    role_tags: "{{ galaxy_info.galaxy_tags }}"
+    full_host_distro: "{{ ansible_distribution | lower }}{{ ansible_distribution_major_version }}"
+
+- name: Host distribution checks
+  ansible.builtin.assert:
+    that: full_host_distro in role_tags
+    fail_msg: "{{ ansible_distribution }} {{ ansible_distribution_major_version }} not supported!"
+    success_msg: "{{ ansible_distribution }} {{ ansible_distribution_major_version }} is supported."
+
+- name: Distribution-specific tasks
+  ansible.builtin.include_tasks: "{{ ansible_distribution }}/main.yml"
+
+- name: OS family-specific tasks
+  ansible.builtin.include_tasks: "{{ ansible_os_family }}/main.yml"
